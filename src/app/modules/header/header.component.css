@@ -1,0 +1,11 @@
+.outer-container {
+    border: 2px solid blue;
+    background-color: transparent;
+    padding: 10px;
+}
+
+.inner-container {
+    background-color: blue;
+    padding: 10px;
+    border-radius: 5px;
+}

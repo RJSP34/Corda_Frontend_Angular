@@ -1,0 +1,45 @@
+<div class="spinner-container" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<div class="content" [ngClass]="{'blocked': isLoading}">
+    <form (ngSubmit)="submitForm()" #documentForm="ngForm" class="form-container">
+        <div class="form-group">
+            <label for="id">ID:</label>
+            <input type="text" class="form-control" id="id" name="id" [(ngModel)]="document.id" disabled>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required [(ngModel)]="document.name" #name="ngModel">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+                <div *ngIf="name.errors && name.errors['required']">Name is required.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pdfInput">PDF:</label>
+            <input type="file" class="form-control-file" id="pdfInput" name="pdfInput"
+                (change)="handleFileInput($event)">
+        </div>
+    <div class="form-group">
+        <label for="authorizationId">Authorization ID:</label>
+        <input type="text" class="form-control" id="authorizationId" name="authorizationId" required
+            [(ngModel)]="document.authorizationId" #authorizationId="ngModel">
+        <div *ngIf="authorizationId.invalid && (authorizationId.dirty || authorizationId.touched)" class="text-danger">
+            <div *ngIf="authorizationId.errors && authorizationId.errors['required']">Authorization ID is required.
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Issuer:</label>
+        <input type="text" id="selectedMember" name="selectedMember" [(ngModel)]="document.selectedMember" disabled
+            class="form-control">
+    </div>
+
+    <div *ngIf="isFormEmpty" class="text-danger">Please fill in all required fields before submitting the form.</div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="documentForm.invalid">Update Document</button>
+    </form>
+</div>

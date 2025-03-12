@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="spinner-container" *ngIf="isLoading">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="content" [ngClass]="{'blocked': isLoading}">
+        <h2>Register</h2>
+        <form>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" [(ngModel)]="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" [(ngModel)]="password">
+            </div>
+            <div>
+                <label for="confirmPassword">Re-enter Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword">
+            </div>
+            <div>
+                <label>Select Role:</label>
+                <select id="role" name="role" [(ngModel)]="role">
+                    <option *ngFor="let option of roles" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+            <div>
+                <label>Select Member:</label>
+                <select id="selectedMember" name="selectedMember" [(ngModel)]="selectedMember">
+                    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+        <div *ngIf="showValidationMessage && (!username || !password || !confirmPassword || !selectedMember || !role || password !== confirmPassword)"style="color: red;">Please fill in all fields and ensure passwords match.</div>
+            <button type="submit" (click)="register()">Register</button>
+            <button type="button" (click)="goToLogin()">Log In</button>
+        </form>
+    </div>
+</div>

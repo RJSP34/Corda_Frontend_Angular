@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="spinner-container" *ngIf="isLoading">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="content" [ngClass]="{'blocked': isLoading}">
+        <h2>Login</h2>
+        <form>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" [(ngModel)]="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" [(ngModel)]="password">
+            </div>
+            <div>
+                <label>Select Option:</label>
+                <select id="selectedMember" name="selectedMember" [(ngModel)]="selectedMember">
+                    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+            <div *ngIf="showValidationMessage && (!username || !password || !selectedMember)" style="color: red;">Please fill in all fields.</div>
+            <button type="submit" (click)="login()">Login</button>
+            <button type="button" (click)="goToRegister()">Register</button>
+        </form>
+    </div>
+</div>

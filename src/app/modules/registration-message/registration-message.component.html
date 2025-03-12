@@ -1,0 +1,9 @@
+<div *ngIf="message" class="message-container">
+    <div class="message-content">
+        <div [innerHTML]="sanitizedMessage"></div>
+    </div>
+    <div class="button-container">
+        <button type="button" (click)="downloadTxt()">Download</button>
+        <button type="button" (click)="goToLogin()">Log In</button>   
+     </div>
+</div>

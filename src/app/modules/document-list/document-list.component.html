@@ -1,0 +1,70 @@
+<div class="spinner-container" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<div class="content" [ngClass]="{'blocked': isLoading}">
+    <table class="table">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let column of columns">
+                    <ng-container
+                        *ngIf="column !== 'Update' && column !== 'Delete' && column !== 'View History' && column !== 'Sign'">
+                        <th>{{ column }}</th>
+                    </ng-container>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let document of paginatedDocuments">
+                <tr>
+                    <ng-container *ngFor="let column of columns">
+                        <ng-container *ngIf="column !== 'Update' && column !== 'Delete'">
+                            <td [ngClass]="{'align-left': column === 'Participants'}"
+                                [title]="document[column.toLowerCase()]">
+                                <span *ngIf="column === 'Participants'">
+                                    <ng-container
+                                        *ngFor="let cell of document[column.toLowerCase()].split('\n'); let i = index">
+                                        {{ cell }}
+                                        <br *ngIf="i !== document[column.toLowerCase()].split('\n').length - 1">
+                                    </ng-container>
+                                </span>
+                                <span *ngIf="column !== 'Participants'">{{ document[column.toLowerCase()] }}</span>
+                            </td>
+                        </ng-container>
+                    </ng-container>
+                    <td>
+                        <a *ngIf="columns.includes('Update') && document.id && !document.completed"
+                            [href]="'/update/' + document.id" style="margin-left: 5px; margin-right: 5px;"
+                            class="btn btn-primary" title="Update this document">Update</a>
+                        <a *ngIf="columns.includes('Delete') && document.id && !document.completed"
+                            (click)="deleteDocument(document.id)" style="margin-left: 5px; margin-right: 5px;"
+                            class="btn btn-primary" title="Delete this document">Delete</a>
+                        <a *ngIf="columns.includes('View History') && document.id" (click)="viewDocument(document.id)"
+                            class="btn btn-primary" style="margin-left: 5px; margin-right: 5px;"
+                            title="View history of this document">View History</a>
+                        <a *ngIf="columns.includes('Signed') && document.id && !document.signed" class="btn btn-primary"
+                            style="margin-left: 5px; margin-right: 5px;" (click)="signDocument(document.id)"
+                            title="Sign this document">Sign</a>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+            (pageChange)="refreshDocuments()">
+        </ngb-pagination>
+
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDocuments()">
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+        <div class="text-right" *ngIf="isMedicalRole">
+            <a href="/createdocument" class="btn btn-primary" title="Add a new document">Add Document</a>
+        </div>
+    </div>
+</div>

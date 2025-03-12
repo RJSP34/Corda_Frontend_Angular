@@ -1,0 +1,64 @@
+<div class="spinner-container" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<div class="content" [ngClass]="{'blocked': isLoading}">
+    <table class="table">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let column of columns">
+                    <ng-container
+                        *ngIf="column !== 'Update' && column !== 'Delete' && column !== 'View History' && column !== 'Sign'">
+                        <th>{{ column }}</th>
+                    </ng-container>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let document of documents">
+                <tr>
+                    <ng-container *ngFor="let column of columns">
+                        <td [title]="document[column.toLowerCase()]">
+                            <div *ngIf="column.toLowerCase() === 'data'">
+                                <div
+                                    *ngIf="document[column.toLowerCase()] && document[column.toLowerCase()].length > 30">
+                                    <button class="btn btn-primary" (click)="downloadPdf(document.id)"
+                                        title="Download PDF">Download</button>
+                                </div>
+                                <div
+                                    *ngIf="!document[column.toLowerCase()] || document[column.toLowerCase()].length <= 30">
+                                    {{ document[column.toLowerCase()] }}
+                                </div>
+                            </div>
+                            <div *ngIf="column.toLowerCase() !== 'data'">
+                                {{ document[column.toLowerCase()] }}
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+            (pageChange)="refreshDocuments()">
+        </ngb-pagination>
+
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDocuments()">
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+        <div class="text-right" *ngIf="isMedicalRole">
+            <a href="/createdocument" class="btn btn-primary" title="Add a new document">Add Document</a>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between p-2">
+        <input type="text" class="form-control" [(ngModel)]="PrivateBoxValue" title="Enter your private key">
+        <button class="btn btn-primary" [disabled]="!PrivateBoxValue" (click)="storePrivateKey()"
+            title="Insert Private Key">Insert Private Key</button>
+    </div>
+</div>

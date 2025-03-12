@@ -1,0 +1,21 @@
+<div class="spinner-container" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+
+<div class="content" [ngClass]="{'blocked': isLoading}">
+    <div>
+        <p><strong>ID:</strong> {{ profile.id }}</p>
+        <p><strong>Username:</strong> {{ profile.username }}</p>
+        <p><strong>Public Key:</strong> {{ profile.publicKey }}</p>
+        <p><strong>Created At:</strong> {{ profile.createdAt | date:'medium' }}</p>
+        <p><strong>Last Updated:</strong> {{ profile.lastUpdated | date:'medium' }}</p>
+        <p><strong>Record State:</strong> {{ profile.recordState }}</p>
+        <p><strong>Version:</strong> {{ profile.version }}</p>
+        <div class="d-flex justify-content-between p-2">
+            <button class="btn btn-primary" (click)="requestPrivateKey()">Request Private Key</button>
+        </div>
+    </div>
+</div>
